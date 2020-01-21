@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Laguna.WS</title>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link type="text/css" rel="stylesheet" href="./css/main.css" />
+
+</head>
+
+<body>
+    <nav>
+    </nav>
+    <main>
+        <header>
+            <img src="img/LagunaWS.png">
+        </header>
+        <section>
+            <h3>All systems operative</h3>
+            <div class="servers" id="servers">
+                <div class="item"></div>
+                <div class="item "></div>
+                <div class="item "></div>
+                <div class="item "></div>
+                <div class="item"></div>
+                <div class="item"></div>
+            </div>
+            <div class="message">
+                <h4>Server 4: </h4><span>on mainteance</span>
+            </div>
+        </section>
+        <span id="msg"></span>
+    </main>
+    <footer>
+        <a href=""><img src="img/laguna.png">
+        </a>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+
+        var socket = io('http://localhost:4949', { autoConnect: false });
+
+        socket.on('connect', function () {
+            console.log("conected");
+            socket.emit('check', "lagunaWS");
+            
+            socket.on('message', function (msg) {      
+                document.getElementById('msg').innerHTML = msg;
+                var node = document.createElement("DIV");
+                node.classList.add("item");
+                node.classList.add("in");
+                node.classList.add(msg.message);
+                document.getElementById("servers").appendChild(node);
+            });
+
+            socket.on('hello', function (msg) {
+            
+                document.getElementById('msg').innerHTML = msg;
+          
+            });
+
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            socket.open()
+        }, false);
+
+    </script>
+</body>
+
+</html>
